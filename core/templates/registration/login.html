@@ -15,7 +15,13 @@
       <img class="login-logo" src="{% static 'core/recomecar-logo.svg' %}" alt="Recomeçar">
       <p class="eyebrow">Projeto Integrador</p>
       <h1>Cantina Recomeçar</h1>
-      <p class="muted">Eu controlo clientes, créditos, estoque, vendas e relatórios em uma cantina institucional.</p>
+      <p class="muted">Sistema web para controlar créditos de clientes, estoque da cantina, vendas com registro fotográfico e relatórios básicos de gestão.</p>
+
+      <div class="login-features">
+        <span>Cadastro de clientes e créditos</span>
+        <span>Controle de itens e estoque</span>
+        <span>Vendas com conferência por foto</span>
+      </div>
 
       {% if form.errors %}
         <div class="alert">Usuário ou senha inválidos.</div>

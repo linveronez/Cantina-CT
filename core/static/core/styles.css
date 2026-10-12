@@ -49,6 +49,11 @@ td small { display: block; margin-top: 3px; }
 }
 .login-card h1 { margin: 0; font-size: 30px; letter-spacing: 0; }
 .login-logo { width: 154px; height: auto; }
+.login-features { display: grid; gap: 8px; }
+.login-features span {
+  background: var(--primary-soft); border: 1px solid #c9d8ff; border-radius: 6px;
+  color: #173b8f; font-size: 13px; font-weight: 700; padding: 9px 10px;
+}
 .demo-box { background: #f8fbff; border: 1px solid var(--line); border-radius: 6px; display: grid; gap: 4px; padding: 12px; }
 .alert, .message.error { background: #fff1f0; border: 1px solid #ffd1cc; color: var(--danger); }
 
