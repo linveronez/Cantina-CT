@@ -1,0 +1,28 @@
+databases:
+  - name: cantina-ct-dev-db
+    plan: free
+    databaseName: cantina_ct_dev
+    user: cantina_ct_dev
+
+services:
+  - type: web
+    name: cantina-ct-dev
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: "bash build.sh"
+    preDeployCommand: "python manage.py migrate"
+    initialDeployHook: "python manage.py seed && python manage.py loaddata render_dev_data"
+    startCommand: "gunicorn config.wsgi:application"
+    healthCheckPath: "/login/"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cantina-ct-dev-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: WEB_CONCURRENCY
+        value: "4"

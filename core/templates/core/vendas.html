@@ -15,7 +15,7 @@
     <label>Cliente
       <select name="cliente" required data-client-select>
         {% for cliente in clientes %}
-          <option value="{{ cliente.id }}" data-photo="{% if cliente.foto %}{{ cliente.foto.url }}{% endif %}" data-document="{{ cliente.documento }}">{{ cliente.nome }} - saldo {{ cliente.credito|br_money }}</option>
+          <option value="{{ cliente.id }}" data-balance="{{ cliente.credito }}" data-photo="{% if cliente.foto %}{{ cliente.foto.url }}{% endif %}" data-document="{{ cliente.documento }}">{{ cliente.nome }} - saldo {{ cliente.credito|br_money }}</option>
         {% endfor %}
       </select>
     </label>
@@ -29,17 +29,27 @@
     </div>
 
     <h2>Itens da venda</h2>
-    <div class="sale-grid">
-      {% for item in itens %}
-        <label class="sale-item">
-          <input type="checkbox" name="itens" value="{{ item.id }}" data-price="{{ item.preco }}">
-          <span><strong>{{ item.nome }}</strong><small>{{ item.preco|br_money }} | estoque {{ item.estoque }}</small></span>
-          <input name="quantidade_{{ item.id }}" type="number" min="1" max="{{ item.estoque }}" value="1">
-        </label>
-      {% empty %}
-        <p class="muted">Nenhum item disponível no estoque.</p>
-      {% endfor %}
+    <div class="sale-picker">
+      <label>Produto
+        <select data-sale-item-select>
+          {% for item in itens %}
+            <option value="{{ item.id }}" data-name="{{ item.nome }}" data-price="{{ item.preco }}" data-stock="{{ item.estoque }}">{{ item.nome }} - {{ item.preco|br_money }} | estoque {{ item.estoque }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Quantidade
+        <input data-sale-item-quantity type="number" min="1" value="1">
+      </label>
+      <button type="button" data-sale-add-item {% if not itens %}disabled{% endif %}>Adicionar</button>
     </div>
+    {% if not itens %}<p class="muted">Nenhum item disponível no estoque.</p>{% endif %}
+
+    <section class="sale-summary">
+      <h3>Itens selecionados</h3>
+      <div data-sale-empty class="muted">Nenhum item selecionado.</div>
+      <div data-sale-lines class="sale-lines"></div>
+      <div data-sale-hidden></div>
+    </section>
   </section>
 
   <aside class="camera-box">
@@ -52,6 +62,7 @@
       <button type="button" data-take-photo>Capturar</button>
     </div>
     <div class="total-box"><span>Total estimado</span><strong data-sale-total>R$ 0,00</strong></div>
+    <div class="total-box"><span>Crédito após venda</span><strong data-sale-balance-after>R$ 0,00</strong></div>
     <button type="submit">Finalizar venda</button>
   </aside>
 </form>

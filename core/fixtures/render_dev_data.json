@@ -1,0 +1,201 @@
+[
+{
+  "model": "core.cliente",
+  "pk": 1,
+  "fields": {
+    "nome": "Eduardo Takahashi",
+    "documento": "494950002",
+    "telefone": "11 971718076",
+    "foto": "clientes/cliente-1.png",
+    "credito": "213.50",
+    "comprovante_pix": "",
+    "observacoes": "",
+    "criado_em": "2026-10-12T20:05:50.857Z",
+    "atualizado_em": "2026-10-12T20:34:39.613Z"
+  }
+},
+{
+  "model": "core.cliente",
+  "pk": 2,
+  "fields": {
+    "nome": "Lin",
+    "documento": "",
+    "telefone": "",
+    "foto": "",
+    "credito": "90.00",
+    "comprovante_pix": "",
+    "observacoes": "",
+    "criado_em": "2026-10-12T20:14:27.316Z",
+    "atualizado_em": "2026-10-12T20:19:09.144Z"
+  }
+},
+{
+  "model": "core.cliente",
+  "pk": 3,
+  "fields": {
+    "nome": "William Santana",
+    "documento": "",
+    "telefone": "",
+    "foto": "",
+    "credito": "250.00",
+    "comprovante_pix": "",
+    "observacoes": "",
+    "criado_em": "2026-10-12T20:15:40.442Z",
+    "atualizado_em": "2026-10-12T20:15:55.554Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 1,
+  "fields": {
+    "nome": "Coca-cola",
+    "categoria": "Refrigerante",
+    "preco": "4.50",
+    "estoque": 18,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:00:10.989Z",
+    "atualizado_em": "2026-10-12T20:00:10.989Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 2,
+  "fields": {
+    "nome": "Cocada Branca",
+    "categoria": "Doces",
+    "preco": "3.50",
+    "estoque": 20,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:00:41.699Z",
+    "atualizado_em": "2026-10-12T20:00:41.699Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 3,
+  "fields": {
+    "nome": "Sufler",
+    "categoria": "Chocolates",
+    "preco": "8.00",
+    "estoque": 20,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:01:08.255Z",
+    "atualizado_em": "2026-10-12T20:01:08.255Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 4,
+  "fields": {
+    "nome": "Kit-kat",
+    "categoria": "Chocolates",
+    "preco": "7.50",
+    "estoque": 20,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:01:31.912Z",
+    "atualizado_em": "2026-10-12T20:01:31.912Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 5,
+  "fields": {
+    "nome": "Pé de Moça",
+    "categoria": "Doces",
+    "preco": "3.50",
+    "estoque": 19,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:01:50.442Z",
+    "atualizado_em": "2026-10-12T20:11:32.371Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 6,
+  "fields": {
+    "nome": "Bolacha",
+    "categoria": "Biscoitos",
+    "preco": "3.00",
+    "estoque": 25,
+    "estoque_minimo": 3,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:06:22.828Z",
+    "atualizado_em": "2026-10-12T20:11:32.364Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 7,
+  "fields": {
+    "nome": "Molecão",
+    "categoria": "Doces",
+    "preco": "3.50",
+    "estoque": 20,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:06:22.843Z",
+    "atualizado_em": "2026-10-12T20:06:22.843Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 9,
+  "fields": {
+    "nome": "Coxinha",
+    "categoria": "Salgados",
+    "preco": "12.00",
+    "estoque": 15,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:08:38.437Z",
+    "atualizado_em": "2026-10-12T20:35:33.230Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 10,
+  "fields": {
+    "nome": "Esfiha",
+    "categoria": "Salgados",
+    "preco": "10.00",
+    "estoque": 13,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:09:01.933Z",
+    "atualizado_em": "2026-10-12T20:11:32.370Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 11,
+  "fields": {
+    "nome": "Hamburgão",
+    "categoria": "Salgados",
+    "preco": "10.00",
+    "estoque": 0,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:09:16.383Z",
+    "atualizado_em": "2026-10-12T20:09:16.383Z"
+  }
+},
+{
+  "model": "core.item",
+  "pk": 12,
+  "fields": {
+    "nome": "Sprite",
+    "categoria": "Refrigerante",
+    "preco": "4.50",
+    "estoque": 0,
+    "estoque_minimo": 5,
+    "ativo": true,
+    "criado_em": "2026-10-12T20:09:40.522Z",
+    "atualizado_em": "2026-10-12T20:09:40.522Z"
+  }
+}
+]

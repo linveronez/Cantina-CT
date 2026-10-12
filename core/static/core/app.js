@@ -31,26 +31,99 @@ document.querySelectorAll("[data-photo-capture]").forEach((widget) => {
 
 if (saleForm) {
   const totalEl = document.querySelector("[data-sale-total]");
+  const balanceAfterEl = document.querySelector("[data-sale-balance-after]");
   const clientSelect = document.querySelector("[data-client-select]");
   const clientPhoto = document.querySelector("[data-client-photo]");
   const clientDocument = document.querySelector("[data-client-document]");
+  const itemSelect = document.querySelector("[data-sale-item-select]");
+  const itemQuantity = document.querySelector("[data-sale-item-quantity]");
+  const addItemButton = document.querySelector("[data-sale-add-item]");
+  const saleLines = document.querySelector("[data-sale-lines]");
+  const saleHidden = document.querySelector("[data-sale-hidden]");
+  const saleEmpty = document.querySelector("[data-sale-empty]");
   const formatter = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  const selectedItems = new Map();
+
+  function parseNumber(value) {
+    return Number(String(value || "0").replace(",", "."));
+  }
 
   function updateTotal() {
     let total = 0;
-    document.querySelectorAll(".sale-item").forEach((row) => {
-      const checkbox = row.querySelector('input[type="checkbox"]');
-      const quantity = row.querySelector('input[type="number"]');
-      if (checkbox.checked) {
-        total += Number(checkbox.dataset.price.replace(",", ".")) * Number(quantity.value || 1);
-      }
+    selectedItems.forEach((item) => {
+      total += item.price * item.quantity;
     });
     totalEl.textContent = formatter.format(total);
+    const selectedClient = clientSelect.options[clientSelect.selectedIndex];
+    const balance = parseNumber(selectedClient?.dataset.balance);
+    balanceAfterEl.textContent = formatter.format(balance - total);
+    balanceAfterEl.classList.toggle("negative", balance - total < 0);
   }
 
-  document.querySelectorAll(".sale-item input").forEach((input) => {
-    input.addEventListener("input", updateTotal);
-    input.addEventListener("change", updateTotal);
+  function renderSelectedItems() {
+    saleLines.innerHTML = "";
+    saleHidden.innerHTML = "";
+    saleEmpty.style.display = selectedItems.size ? "none" : "block";
+
+    selectedItems.forEach((item) => {
+      const line = document.createElement("div");
+      line.className = "sale-line";
+      line.innerHTML = `
+        <span><strong>${item.name}</strong><small>${formatter.format(item.price)} x ${item.quantity}</small></span>
+        <strong>${formatter.format(item.price * item.quantity)}</strong>
+        <button type="button" class="ghost-button" data-remove-item="${item.id}">Remover</button>
+      `;
+      saleLines.appendChild(line);
+
+      const itemInput = document.createElement("input");
+      itemInput.type = "hidden";
+      itemInput.name = "itens";
+      itemInput.value = item.id;
+      saleHidden.appendChild(itemInput);
+
+      const quantityInput = document.createElement("input");
+      quantityInput.type = "hidden";
+      quantityInput.name = `quantidade_${item.id}`;
+      quantityInput.value = item.quantity;
+      saleHidden.appendChild(quantityInput);
+    });
+
+    saleLines.querySelectorAll("[data-remove-item]").forEach((button) => {
+      button.addEventListener("click", () => {
+        selectedItems.delete(button.dataset.removeItem);
+        renderSelectedItems();
+      });
+    });
+
+    updateTotal();
+  }
+
+  addItemButton?.addEventListener("click", () => {
+    const selected = itemSelect.options[itemSelect.selectedIndex];
+    if (!selected) return;
+
+    const id = selected.value;
+    const current = selectedItems.get(id);
+    const stock = Number(selected.dataset.stock || 0);
+    const requestedQuantity = Math.max(1, Number(itemQuantity.value || 1));
+    const nextQuantity = Math.min(stock, (current?.quantity || 0) + requestedQuantity);
+
+    selectedItems.set(id, {
+      id,
+      name: selected.dataset.name,
+      price: parseNumber(selected.dataset.price),
+      quantity: nextQuantity,
+      stock,
+    });
+    itemQuantity.value = 1;
+    renderSelectedItems();
+  });
+
+  saleForm.addEventListener("submit", (event) => {
+    if (selectedItems.size === 0) {
+      event.preventDefault();
+      alert("Selecione pelo menos um item antes de finalizar a venda.");
+    }
   });
 
   function updateClientPreview() {
@@ -64,6 +137,7 @@ if (saleForm) {
   }
 
   clientSelect.addEventListener("change", updateClientPreview);
+  clientSelect.addEventListener("change", updateTotal);
 
   const video = document.getElementById("camera");
   const canvas = document.getElementById("snapshot");
@@ -87,5 +161,6 @@ if (saleForm) {
   });
 
   updateTotal();
+  renderSelectedItems();
   updateClientPreview();
 }
