@@ -1,0 +1,47 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1d4ed8">
+  <link rel="manifest" href="{% url 'manifest' %}">
+  <link rel="stylesheet" href="{% static 'core/styles.css' %}">
+  <title>{% block title %}Sistema de Cantina{% endblock %}</title>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="{% url 'dashboard' %}">
+        <img class="brand-logo" src="{% static 'core/recomecar-mark.svg' %}" alt="Recomeçar">
+        <span><strong>Recomeçar</strong><small>Cantina institucional</small></span>
+      </a>
+      <nav>
+        <a href="{% url 'dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Início</a>
+        <a href="{% url 'clientes' %}" class="{% if request.resolver_match.url_name == 'clientes' %}active{% endif %}">Clientes</a>
+        <a href="{% url 'itens' %}" class="{% if request.resolver_match.url_name == 'itens' %}active{% endif %}">Itens</a>
+        <a href="{% url 'vendas' %}" class="{% if request.resolver_match.url_name == 'vendas' %}active{% endif %}">Vendas</a>
+        {% if can_view_reports %}<a href="{% url 'relatorios' %}" class="{% if request.resolver_match.url_name == 'relatorios' %}active{% endif %}">Relatórios</a>{% endif %}
+      </nav>
+      <div class="user-box">
+        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+        <span>{{ role }}</span>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button class="link-button" type="submit">Sair</button>
+        </form>
+      </div>
+    </aside>
+
+    <main class="content">
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  <script src="{% static 'core/app.js' %}"></script>
+</body>
+</html>

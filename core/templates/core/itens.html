@@ -1,0 +1,79 @@
+{% extends "core/base.html" %}
+{% load currency %}
+{% block title %}Itens | Sistema de Cantina{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Estoque</p>
+    <h1>Itens</h1>
+  </div>
+</header>
+
+<section class="split">
+  <form class="panel stack" method="post">
+    {% csrf_token %}
+    <h2>Novo item</h2>
+    {% for field in form %}
+      <label class="{% if field.field.widget.input_type == 'checkbox' %}check-label{% endif %}">{{ field.label }} {{ field }}</label>
+      {% if field.errors %}<span class="field-error">{{ field.errors|join:", " }}</span>{% endif %}
+    {% endfor %}
+    <button type="submit" {% if not can_manage_items %}disabled{% endif %}>Cadastrar item</button>
+    {% if not can_manage_items %}<p class="muted">Meu perfil atual apenas realiza vendas.</p>{% endif %}
+  </form>
+
+  <section class="panel">
+    <div class="panel-title-row">
+      <h2>Itens cadastrados</h2>
+      <form class="filter-form" method="get">
+        <input name="busca" value="{{ busca }}" placeholder="Filtrar por nome">
+        <select name="categoria">
+          <option value="">Todas as categorias</option>
+          {% for categoria in categorias %}
+            <option value="{{ categoria }}" {% if categoria == categoria_selecionada %}selected{% endif %}>{{ categoria }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit">Filtrar</button>
+        <a class="ghost-button" href="{% url 'itens' %}">Limpar</a>
+      </form>
+    </div>
+    <table>
+      <thead><tr><th>Item</th><th>Valor</th><th>Estoque</th><th>Mínimo</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody>
+        {% for item in itens %}
+          <tr>
+            <td data-label="Item">{{ item.nome }}<small>{{ item.categoria|default:"Sem categoria" }}</small></td>
+            <td data-label="Valor">{{ item.preco|br_money }}</td>
+            <td data-label="Estoque" class="{% if item.estoque_baixo %}negative{% endif %}">{{ item.estoque }}</td>
+            <td data-label="Mínimo">{{ item.estoque_minimo }}</td>
+            <td data-label="Status">{% if item.ativo %}Ativo{% else %}Inativo{% endif %}</td>
+            <td data-label="Ações">
+              {% if can_manage_items %}
+                <div class="item-actions">
+                  <form class="price-form" method="post" action="{% url 'atualizar_preco_item' item.id %}">
+                    {% csrf_token %}
+                    <input name="preco" type="number" min="0.01" step="0.01" value="{{ item.preco|stringformat:'0.2f' }}">
+                    <button type="submit">Alterar preço</button>
+                  </form>
+                  <form class="price-form" method="post" action="{% url 'atualizar_estoque_item' item.id %}">
+                    {% csrf_token %}
+                    <input name="estoque" type="number" min="0" step="1" value="{{ item.estoque }}">
+                    <button type="submit">Alterar estoque</button>
+                  </form>
+                  <form method="post" action="{% url 'excluir_item' item.id %}" onsubmit="return confirm('Deseja excluir este item?');">
+                    {% csrf_token %}
+                    <button class="danger-button" type="submit">Excluir</button>
+                  </form>
+                </div>
+              {% else %}
+                Sem permissão
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="6">Nenhum item encontrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</section>
+{% endblock %}

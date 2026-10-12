@@ -1,0 +1,58 @@
+{% extends "core/base.html" %}
+{% load currency %}
+{% block title %}Vendas | Sistema de Cantina{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Operação</p>
+    <h1>Nova venda</h1>
+  </div>
+</header>
+
+<form class="panel sale-form" method="post" data-sale-form>
+  {% csrf_token %}
+  <section class="stack">
+    <label>Cliente
+      <select name="cliente" required data-client-select>
+        {% for cliente in clientes %}
+          <option value="{{ cliente.id }}" data-photo="{% if cliente.foto %}{{ cliente.foto.url }}{% endif %}" data-document="{{ cliente.documento }}">{{ cliente.nome }} - saldo {{ cliente.credito|br_money }}</option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <div class="client-preview">
+      <div class="preview-photo" data-client-photo>Sem foto</div>
+      <div>
+        <strong>Foto cadastrada</strong>
+        <small data-client-document>Use para conferir com a foto capturada na venda.</small>
+      </div>
+    </div>
+
+    <h2>Itens da venda</h2>
+    <div class="sale-grid">
+      {% for item in itens %}
+        <label class="sale-item">
+          <input type="checkbox" name="itens" value="{{ item.id }}" data-price="{{ item.preco }}">
+          <span><strong>{{ item.nome }}</strong><small>{{ item.preco|br_money }} | estoque {{ item.estoque }}</small></span>
+          <input name="quantidade_{{ item.id }}" type="number" min="1" max="{{ item.estoque }}" value="1">
+        </label>
+      {% empty %}
+        <p class="muted">Nenhum item disponível no estoque.</p>
+      {% endfor %}
+    </div>
+  </section>
+
+  <aside class="camera-box">
+    <h2>Evidência por foto</h2>
+    <video id="camera" autoplay playsinline muted></video>
+    <canvas id="snapshot" width="640" height="480"></canvas>
+    <input type="hidden" name="foto_base64" id="foto_base64">
+    <div class="actions">
+      <button type="button" data-start-camera>Abrir câmera</button>
+      <button type="button" data-take-photo>Capturar</button>
+    </div>
+    <div class="total-box"><span>Total estimado</span><strong data-sale-total>R$ 0,00</strong></div>
+    <button type="submit">Finalizar venda</button>
+  </aside>
+</form>
+{% endblock %}

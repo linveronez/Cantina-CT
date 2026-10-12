@@ -1,0 +1,65 @@
+{% extends "core/base.html" %}
+{% load currency %}
+{% block title %}Relatórios | Sistema de Cantina{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div>
+    <p class="eyebrow">Gestão</p>
+    <h1>Relatórios</h1>
+  </div>
+</header>
+
+<section class="report-grid">
+  <section class="panel">
+    <h2>Itens mais vendidos</h2>
+    <table>
+      <thead><tr><th>Item</th><th>Qtd.</th><th>Receita</th></tr></thead>
+      <tbody>
+        {% for item in itens_mais_vendidos %}<tr><td data-label="Item">{{ item.nome }}</td><td data-label="Qtd.">{{ item.quantidade }}</td><td data-label="Receita">{{ item.receita|br_money }}</td></tr>{% empty %}<tr><td colspan="3">Sem vendas.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Lista de compras</h2>
+    <table>
+      <thead><tr><th>Item</th><th>Estoque</th><th>Mínimo</th></tr></thead>
+      <tbody>
+        {% for item in lista_compras %}<tr><td data-label="Item">{{ item.nome }}</td><td data-label="Estoque" class="negative">{{ item.estoque }}</td><td data-label="Mínimo">{{ item.estoque_minimo }}</td></tr>{% empty %}<tr><td colspan="3">Estoque dentro do mínimo.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Clientes em débito</h2>
+    <table>
+      <thead><tr><th>Cliente</th><th>Saldo</th></tr></thead>
+      <tbody>
+        {% for cliente in clientes_devedores %}<tr><td data-label="Cliente">{{ cliente.nome }}</td><td data-label="Saldo" class="negative">{{ cliente.credito|br_money }}</td></tr>{% empty %}<tr><td colspan="2">Nenhum débito.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </section>
+</section>
+
+<section class="panel">
+  <h2>Vendas recentes</h2>
+  <table>
+    <thead><tr><th>Venda</th><th>Cliente</th><th>Total</th><th>Saldo final</th><th>Atendente</th><th>Data</th><th>Foto</th></tr></thead>
+    <tbody>
+      {% for venda in vendas %}
+        <tr>
+          <td data-label="Venda">#{{ venda.id }}</td>
+          <td data-label="Cliente">{{ venda.cliente.nome }}</td>
+          <td data-label="Total">{{ venda.total|br_money }}</td>
+          <td data-label="Saldo final" class="{% if venda.saldo_apos_venda < 0 %}negative{% else %}positive{% endif %}">{{ venda.saldo_apos_venda|br_money }}</td>
+          <td data-label="Atendente">{{ venda.atendente.get_full_name|default:venda.atendente.username }}</td>
+          <td data-label="Data">{{ venda.criado_em|date:"d/m/Y H:i" }}</td>
+          <td data-label="Foto">{% if venda.foto %}<a href="{{ venda.foto.url }}" target="_blank">Abrir</a>{% else %}-{% endif %}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">Sem vendas registradas.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

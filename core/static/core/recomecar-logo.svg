@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 140" role="img" aria-labelledby="title desc">
+  <title id="title">Recomeçar</title>
+  <desc id="desc">Logo institucional fictício da cantina Recomeçar.</desc>
+  <rect x="8" y="10" width="120" height="120" rx="30" fill="#1d4ed8"/>
+  <path d="M68 38c18 0 32 14 32 32 0 26-32 44-32 44S36 96 36 70c0-18 14-32 32-32Z" fill="#e8f0ff"/>
+  <path d="M68 58c7-10 19-14 31-9-1 19-13 34-31 43-18-9-30-24-31-43 12-5 24-1 31 9Z" fill="#0f9f8f"/>
+  <path d="M68 55v43" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  <path d="M51 76c9 0 14 4 17 11 3-7 8-11 17-11" stroke="#ffffff" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <text x="150" y="63" fill="#102a5f" font-family="Arial, sans-serif" font-size="34" font-weight="800">Recomeçar</text>
+  <text x="152" y="94" fill="#64748b" font-family="Arial, sans-serif" font-size="18" font-weight="700">Cantina institucional</text>
+</svg>
