@@ -9,15 +9,21 @@
   </div>
 </header>
 
-<section class="split">
-  <form class="panel stack" method="post">
+<section class="items-layout">
+  <form class="panel stack compact-product-form" method="post">
     {% csrf_token %}
-    <h2>Novo item</h2>
-    {% for field in form %}
-      <label class="{% if field.field.widget.input_type == 'checkbox' %}check-label{% endif %}">{{ field.label }} {{ field }}</label>
-      {% if field.errors %}<span class="field-error">{{ field.errors|join:", " }}</span>{% endif %}
-    {% endfor %}
-    <button type="submit" {% if not can_manage_items %}disabled{% endif %}>Cadastrar item</button>
+    <div class="panel-title-row">
+      <h2>Adicionar novo produto</h2>
+    </div>
+    <div class="product-form-grid">
+      {% for field in form %}
+        <div class="{% if field.field.widget.input_type == 'checkbox' %}product-check-field{% endif %}">
+          <label class="{% if field.field.widget.input_type == 'checkbox' %}check-label{% endif %}">{{ field.label }} {{ field }}</label>
+          {% if field.errors %}<span class="field-error">{{ field.errors|join:", " }}</span>{% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" {% if not can_manage_items %}disabled{% endif %}>Cadastrar produto</button>
+    </div>
     {% if not can_manage_items %}<p class="muted">Meu perfil atual apenas realiza vendas.</p>{% endif %}
   </form>
 
@@ -49,19 +55,21 @@
             <td data-label="Ações">
               {% if can_manage_items %}
                 <div class="item-actions">
-                  <form class="price-form" method="post" action="{% url 'atualizar_preco_item' item.id %}">
+                  <form class="item-action-form" method="post" action="{% url 'atualizar_preco_item' item.id %}">
                     {% csrf_token %}
+                    <span>Preço</span>
                     <input name="preco" type="number" min="0.01" step="0.01" value="{{ item.preco|stringformat:'0.2f' }}">
-                    <button type="submit">Alterar preço</button>
+                    <button class="small-button" type="submit">Salvar</button>
                   </form>
-                  <form class="price-form" method="post" action="{% url 'atualizar_estoque_item' item.id %}">
+                  <form class="item-action-form" method="post" action="{% url 'atualizar_estoque_item' item.id %}">
                     {% csrf_token %}
+                    <span>Estoque</span>
                     <input name="estoque" type="number" min="0" step="1" value="{{ item.estoque }}">
-                    <button type="submit">Alterar estoque</button>
+                    <button class="small-button" type="submit">Salvar</button>
                   </form>
                   <form method="post" action="{% url 'excluir_item' item.id %}" onsubmit="return confirm('Deseja excluir este item?');">
                     {% csrf_token %}
-                    <button class="danger-button" type="submit">Excluir</button>
+                    <button class="danger-button small-button" type="submit">Excluir</button>
                   </form>
                 </div>
               {% else %}
